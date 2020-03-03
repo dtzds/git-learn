@@ -212,3 +212,4 @@ See 'git help config' and search for 'log.mailmap' for further information.
 
 cdd
 mm
+dd
