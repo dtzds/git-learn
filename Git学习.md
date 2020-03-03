@@ -111,5 +111,102 @@ Initialized empty Git repository in /Users/michael/learngit/.git/
 
 ## 版本回退
 
+使用`git log` 进行查看版本日志
 
+```
+$ git log
+warning: log.mailmap is not set; its implicit value will change in an
+upcoming release. To squelch this message and preserve current
+behaviour, set the log.mailmap configuration value to false.
+
+To squelch this message and adopt the new behaviour now, set the
+log.mailmap configuration value to true.
+
+See 'git help config' and search for 'log.mailmap' for further information.
+
+commit 9fd0fede4f311d07f2e281cdf9811eb864671f93 (HEAD -> master)
+Author: dtzds <1356871485@qq.com>
+Date:   Tue Mar 3 20:54:41 2020 +0800
+
+add
+
+commit 28e2f28f29a9e27aa34c2864d522584a49c77831
+Author: dtzds <1356871485@qq.com>
+Date:   Tue Mar 3 20:40:36 2020 +0800
+
+添加了一些学习笔记“
+git commit -m 添加了一些学习笔记
+
+commit 3758339098eb68fd0f7bf81ada3fcd68a20f18cb
+Author: dtzds <1356871485@qq.com>
+Date:   Tue Mar 3 20:11:28 2020 +0800
+
+git学习
+```
+
+我们可以看到有3个版本，每个commit后面的一串数字为`commit id` 即版本号
+
+如果嫌弃输出的信息太多，可以加上--pretty=oneline参数
+
+```
+$ git log --pretty=oneline
+9fd0fede4f311d07f2e281cdf9811eb864671f93 (HEAD -> master) add
+28e2f28f29a9e27aa34c2864d522584a49c77831 添加了一些学习笔记“ git commit -m 添加
+了一些学习笔记
+3758339098eb68fd0f7bf81ada3fcd68a20f18cb git学习
+```
+
+其中`HEAD`表示当前版本 ，上一个版本就是`HEAD^`，上上一个版本就是`HEAD^^`，当然往上100个版本写100个`^`比较容易数不过来，所以写成`HEAD~100`。 
+
+将该文件回退到上一个版本：
+
+```
+$ git reset --hard HEAD^^
+HEAD is now at 3758339 git学习
+```
+
+查看文件`Git.md`，发现文件的确回退到`git 学习`的版本，查看日志也没有后面的两个版本，该怎么回到未来的某个版本，只要当前窗口没有关闭，找到该版本号是可以回去的。
+
+比如：回到`add`版本（只需要版本id的前几位）
+
+```
+$ git reset --hard 9fd0fede4f311d07f2e281cdf9811eb864671f93
+HEAD is now at 9fd0fed add
+```
+
+git中其实就是将HEAD指针指向某个版本
+
+**当你把版本回退到之前的版本后，又把电脑关了，想要把版本恢复回去该怎么做？**
+
+当然我们要知道该版本的版本号，git提供了一个命令`git reflog`可以记录每次的命令
+
+```
+$ git reflog
+warning: log.mailmap is not set; its implicit value will change in an
+upcoming release. To squelch this message and preserve current
+behaviour, set the log.mailmap configuration value to false.
+
+To squelch this message and adopt the new behaviour now, set the
+log.mailmap configuration value to true.
+
+See 'git help config' and search for 'log.mailmap' for further information.
+
+9fd0fed (HEAD -> master) HEAD@{0}: reset: moving to 9fd0fede4f311d07f2e281cdf9811eb864671f93
+3758339 HEAD@{1}: reset: moving to HEAD^^
+9fd0fed (HEAD -> master) HEAD@{2}: commit: add
+28e2f28 HEAD@{3}: commit: 添加了一些学习笔记“
+3758339 HEAD@{4}: commit (initial): git学习
+```
+
+我们可以得知`add` 版本的版本号为 `9fd0fed` 
+
+## 暂存区和工作区
+
+**工作区**即我们电脑里能看到的目录 
+
+.git目录不算工作区，而是一个git版本库，版本库中有一个**`暂存区`** ，还有Git为我们自动创建的第一个分支`master`，以及指向`master`的一个指针叫`HEAD`。 
+
+1、`git add` 就是把文件添加到暂存区中
+
+2、`git commit` 则是将暂存区中的内容一次性提交到`master`分支中区
 
