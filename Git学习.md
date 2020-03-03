@@ -210,6 +210,89 @@ See 'git help config' and search for 'log.mailmap' for further information.
 
 2、`git commit` 则是将暂存区中的内容一次性提交到`master`分支中区
 
-cdd
-mm
-dd
+## 修改
+
+**git是管理修改的而不是管理文件的**
+
+### 撤销修改：
+
+**场景1**：你修改了工作区中的文件，但还没有`git add`到暂存区中，该如何撤销？
+
+我们使用`git status` 可以知道，`git restore <file>`可以将工作区中的修改回退回去
+
+```
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   Git学习.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+故可以使用`git restore Git学习.md` 命令进行回退，git还提供了另一个命令`git checkout -- Git学习.md` 也可以进行回退
+
+**场景二：**你修改了工作区中的文件，且已经`git add` 到暂存区中，该如何进行回退？
+
+1、先将暂存区修改撤销掉，使用`git status`查看发现可以使用`git restore -- staged <file>`经暂存区回退到工作区
+
+```
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   Git学习.md
+```
+
+故可以使用`git restore --staged Git学习.md` 回退，也可以使用`git reset HEAD Git学习.md` 进行撤销到工作区，即回到场景一
+
+2、再重复场景一的操作就行
+
+**场景三：** 已经将修改了的文件提交到版本库，不过不是提交到远程库
+
+可以使用版本回退
+
+```
+git reset --hard commit_id
+```
+
+## 删除文件
+
+1、在目录中手动删除了文件，使用`git status` 查看状态
+
+```
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        deleted:    ddddd.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+提示可以使用`git add/rm <file>` 进行更新，即删除，或者使用`git restore <file>` 来进行恢复工作区文件
+
+2、使用`git rm <file>` 删除文件的方式（目录中没有删除），使用`git status` 查看文件状态
+
+```
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        deleted:    ddddd.md
+```
+
+发现可以使用`git restore -- staged <file>` 的方式进行回退到工作区中，由此可以联想到**撤销修改**的操作，可以回退回去，故工作区中的内容可以通过版本库来进行恢复，故只要提交了更新，就不怕误删文件
+
+则删除文件的操作是：**
+
+```
+1、手动删除或rm文件
+2、git add/rm test.md
+3、git commit -m ""
+```
+
+或者是：`git rm <file>` -> `git commit`
+
