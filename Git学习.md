@@ -296,3 +296,29 @@ Changes to be committed:
 
 或者是：`git rm <file>` -> `git commit`
 
+## 远程仓库
+
+### 添加远程仓库
+
+1. **建立连接**
+
+   首先在本地建立了一个仓库，在GitHub中创建了一个远程仓库，使两个仓库连接进行远程同步，GitHub上的仓库就可以作为备份使用，也可以让其他人使用其协作，假设GitHub仓库名为git-learn
+
+   在GItHub中我们可以使用https也可以使用SSH
+
+   1、使用`https`连接时：
+
+   使用命令`$ git remote add origin https://github.com/dtzds/git-learn.git`来进行添加远程仓库
+
+   2、使用`SSH`连接时：
+
+   使用命令`$ git remote add origin git@github.com:dtzds/git-learn.git`来进行添加远程仓库
+
+   其中`origin`是远程库的名字，也可以使用别的名字
+
+2. **把内容推送到GitHub中去：**
+
+   使用`git push -u origin master`把本地库的所有内容推送到远程库中：
+
+
+
