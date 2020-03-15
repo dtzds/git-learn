@@ -342,7 +342,7 @@ Changes to be committed:
 
 ## 分支管理
 
-在[版本回退](https://www.liaoxuefeng.com/wiki/896043488029600/897013573512192)里，你已经知道，每次提交，Git都把它们串成一条时间线，这条时间线就是一个分支。截止到目前，只有一条时间线，在Git里，这个分支叫主分支，即`master`分支。`HEAD`严格来说不是指向提交，而是指向`master`，`master`才是指向提交的，所以，`HEAD`指向的就是当前分支。
+在版本回退里，你已经知道，每次提交，Git都把它们串成一条时间线，这条时间线就是一个分支。截止到目前，只有一条时间线，在Git里，这个分支叫主分支，即`master`分支。`HEAD`严格来说不是指向提交，而是指向`master`，`master`才是指向提交的，所以，`HEAD`指向的就是当前分支。
 
 一开始的时候，`master`分支是一条线，Git用`master`指向最新的提交，再用`HEAD`指向`master`，就能确定当前分支，以及当前分支的提交点：
 
@@ -385,9 +385,11 @@ Switched to a new branch 'dev'
 
 ```
 $ git branch dev			//创建分支
-$ git checkout dev			//选择分支
+$ git checkout dev			//切换分支
 Switched to branch 'dev'
 ```
+
+切换分支建议使用`git switch dev`
 
 使用`git branch`命令查看当前分支：
 
@@ -395,7 +397,6 @@ Switched to branch 'dev'
 $ git branch				//查看分支
 * dev
   master
-
 ```
 
 `git branch`命令会列出所有的分支，当前分支前用`*`标识。
@@ -431,3 +432,52 @@ Fast-forward
 ```
 
 `git merge`命令用于合并指定分支到当前分支。合并后，再查看`readme.txt`的内容，就可以看到，和`dev`分支的最新提交是完全一样的。
+
+ 注意到上面的`Fast-forward`信息，Git告诉我们，这次合并是“快进模式”，也就是直接把`master`指向`dev`的当前提交，所以合并速度非常快。 
+
+合并完成后，就可以放心地删除`dev`分支了：
+
+```
+$ git branch -d dev
+Deleted branch dev (was b17d20e).
+```
+
+删除后，查看`branch`，就只剩下`master`分支了：
+
+```
+$ git branch
+* master
+```
+
+因为创建、合并和删除分支非常快，所以Git鼓励你使用分支完成某个任务，合并后再删掉分支，这和直接在`master`分支上工作效果是一样的，但过程更安全。
+
+#### **switch**
+
+切换分支`git checkout <branch>`和撤销修改`git checkout -- <file>` ,一个命令有两个功能，故推荐使用`switch`
+
+创建并切换到新的分支`dev`,可以使用：
+
+```
+$ git switch -c dev
+```
+
+切换到分支`master`:
+
+```
+$ git switch master
+```
+
+### 分支管理策略 
+
+通常，合并分支时，如果可能，Git会用`Fast forward`模式，但这种模式下，删除分支后，会丢掉分支信息。
+
+如果要强制禁用`Fast forward`模式，Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息。
+
+下面我们实战一下`--no-ff`方式的`git merge`：
+
+首先，仍然创建并切换`dev`分支：
+
+```
+$ git switch -c dev
+```
+
