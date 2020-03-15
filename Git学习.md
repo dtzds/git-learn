@@ -320,5 +320,25 @@ Changes to be committed:
 
    使用`git push -u origin master`把本地库的所有内容推送到远程库中：
 
+   陶志胜@DESKTOP-BE8RFTA MINGW64 /repository (master)
+
+   ```
+   $ git push -u origin master
+   fatal: TaskCanceledException encountered.
+      ▒▒ȡ▒▒һ▒▒▒▒▒▒
+   Enumerating objects: 5, done.
+   Counting objects: 100% (5/5), done.
+   Delta compression using up to 4 threads
+   Compressing objects: 100% (2/2), done.
+   Writing objects: 100% (3/3), 768 bytes | 768.00 KiB/s, done.
+   Total 3 (delta 1), reused 0 (delta 0)
+   remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+   To https://github.com/dtzds/git-learn.git
+      cf598d9..c38ce71  master -> master
+   Branch 'master' set up to track remote branch 'master' from 'origin'.
+   ```
+
+    加上了`-u`参数，Git不但会把本地的`master`分支内容推送的远程新的`master`分支，还会把本地的`master`分支和远程的`master`分支关联起来，在以后的推送或者拉取时就可以简化命令 
+
 
 
