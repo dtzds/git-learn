@@ -451,7 +451,7 @@ $ git branch
 
 因为创建、合并和删除分支非常快，所以Git鼓励你使用分支完成某个任务，合并后再删掉分支，这和直接在`master`分支上工作效果是一样的，但过程更安全。
 
-#### **switch**
+**switch**
 
 切换分支`git checkout <branch>`和撤销修改`git checkout -- <file>` ,一个命令有两个功能，故推荐使用`switch`
 
@@ -480,4 +480,75 @@ $ git switch master
 ```
 $ git switch -c dev
 ```
+
+修改`Git学习.md` 文件，并提交一个新的`commit`:
+
+```
+$ git add Git学习.md
+$ git commit -m "add merge"
+[dev 7682a80] add merge
+ 1 file changed, 54 insertions(+), 4 deletions(-)
+```
+
+然后切换回`master`:
+
+```
+$ git switch master
+Switched to branch 'master'
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+```
+
+并使用`--no-ff` 参数进行分支合并，表示禁用`Fast forward`:
+
+```
+$ git merge --no-ff -m "merge with no-ff" dev
+Merge made by the 'recursive' strategy.
+ Git学习.md | 58 ++++++++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 54 insertions(+), 4 deletions(-)
+```
+
+因为本次合并要创建一个新的commit，所以加上`-m`参数，把commit描述写进去。
+
+合并后，我们用`git log`看看分支历史：
+
+```
+$ git log --graph --pretty=oneline --abbrev-commit
+*   cc851d5 (HEAD -> master) merge with no-ff
+|\
+| * 7682a80 (dev) add merge
+|/
+* 69b4482 添加分支管理
+* 8e3646a (origin/master) test
+* c38ce71 添加了远程仓库的内容
+* cf598d9 git基础学习
+* b062ea7 test
+* b204faa  e enter the commit message for your changes. Lines starting
+* cdc2f09 test
+* 9441aa2 test01
+* 1d968ee test1
+* 9fad183 test
+* 36f6d4c add some thing about Git
+* 9fd0fed add
+* 28e2f28 添加了一些学习笔记“ git commit -m 添加了一些学习笔记
+* 3758339 git学习
+```
+
+可以看到，不使用`Fast forward`模式，merge后就像这样：
+
+![git-no-ff-mode](https://www.liaoxuefeng.com/files/attachments/919023225142304/0)
+
+#### 分支策略
+
+在实际开发中，我们应该按照几个基本原则进行分支管理：
+
+首先，`master`分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活；
+
+那在哪干活呢？干活都在`dev`分支上，也就是说，`dev`分支是不稳定的，到某个时候，比如1.0版本发布时，再把`dev`分支合并到`master`上，在`master`分支发布1.0版本；
+
+你和你的小伙伴们每个人都在`dev`分支上干活，每个人都有自己的分支，时不时地往`dev`分支上合并就可以了。
+
+所以，团队合作的分支看起来就像这样：
+
+![git-br-policy](https://www.liaoxuefeng.com/files/attachments/919023260793600/0)
 
