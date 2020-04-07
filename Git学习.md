@@ -340,6 +340,32 @@ Changes to be committed:
 
     加上了`-u`参数，Git不但会把本地的`master`分支内容推送的远程新的`master`分支，还会把本地的`master`分支和远程的`master`分支关联起来，在以后的推送或者拉取时就可以简化命令 
 
+### 从远程仓库克隆
+
+​	使用 **`git clone git@github.com/dtzds/git-learn.git`**  命令进行从远程仓库进行克隆，将远程仓库的东西克隆到本地库中。
+
+```
+$ git clone git@github.com:dtzds/git-learn.git
+Cloning into 'git-learn'...
+remote: Enumerating objects: 47, done.
+remote: Counting objects: 100% (47/47), done.
+remote: Compressing objects: 100% (18/18), done.
+remote: Total 47 (delta 14), reused 47 (delta 14), pack-reused 0
+Receiving objects: 100% (47/47), 11.43 KiB | 1.27 MiB/s, done.
+Resolving deltas: 100% (14/14), done.
+```
+
+也可以使用 **`git clone https://github.com/dtzds/git-learn.git`** ，使用**`https`** 的方式克隆比较慢，可能会不成功，推荐使用**`ssh`** 
+
+**注意：** 在使用**`ssh`** 进行克隆时，可能需要添加公钥的**`github`** 上，需要在本地生成
+
+```
+$ ssh-keygen -t rsa -C "邮件地址"		
+//按3次回车，会生成/c/Users/用户名/.ssh下生成id_rsa和id_rsa.pub两个文件
+$ vim /c/Users/EWRT/.ssh/id_rsa.pub
+//复制里面的内容，在github的settings -> SSH and GPG keys下添加id_rsa.pub中的内容即可
+```
+
 ## 分支管理
 
 在版本回退里，你已经知道，每次提交，Git都把它们串成一条时间线，这条时间线就是一个分支。截止到目前，只有一条时间线，在Git里，这个分支叫主分支，即`master`分支。`HEAD`严格来说不是指向提交，而是指向`master`，`master`才是指向提交的，所以，`HEAD`指向的就是当前分支。
